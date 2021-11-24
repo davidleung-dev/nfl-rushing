@@ -7,7 +7,7 @@ export interface Player {
     yards: number;
     average: number;
     yards_game: number;
-    td: number;
+    touchdowns: number;
     longest: string | number;
     first: number;
     first_pct: number;
