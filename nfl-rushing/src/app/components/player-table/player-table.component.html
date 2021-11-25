@@ -1,0 +1,92 @@
+<mat-form-field>
+    <input matInput placeholder="Search Players" #input>
+</mat-form-field>
+
+<div *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+</div>
+
+<mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="yards" matSortDirection="desc" matSortDisableClear>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Player</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.player}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="team">
+        <mat-header-cell *matHeaderCellDef>Team</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.team}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef>Position</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.position}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="attempts">
+        <mat-header-cell *matHeaderCellDef>Attempts</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.attempts}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="attempts_game">
+        <mat-header-cell *matHeaderCellDef>Attempts per Game</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.attempts_game}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="yards">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Yards</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.yards}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="average">
+        <mat-header-cell *matHeaderCellDef>Average Yards per Attempt</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.average}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="yards_game">
+        <mat-header-cell *matHeaderCellDef>Yards per Game</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{player.yards_game}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="touchdowns">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Touchdowns</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{ player.touchdowns }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="longest">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Longest Rush</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{ player.longest }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="first">
+        <mat-header-cell *matHeaderCellDef>1st Downs</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{ player.first }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="first_pct">
+        <mat-header-cell *matHeaderCellDef>1st Down %</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{ player.first_pct }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="twenty_plus">
+        <mat-header-cell *matHeaderCellDef>20+ Yard Rushes</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{ player.twenty_plus }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="forty_plus">
+        <mat-header-cell *matHeaderCellDef>40+ Yard Rushes</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{ player.forty_plus }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fumbles">
+        <mat-header-cell *matHeaderCellDef>Fumbles</mat-header-cell>
+        <mat-cell *matCellDef="let player">{{ player.fumbles }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+</mat-table>
+
+<mat-paginator [length]="dataSource.count$ | async" [pageSize]="10" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
