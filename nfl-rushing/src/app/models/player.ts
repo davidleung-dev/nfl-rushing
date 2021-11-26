@@ -1,5 +1,5 @@
 export interface Player {
-    player: string;
+    name: string;
     team: string;
     position: string;
     attempts: number;
@@ -8,7 +8,7 @@ export interface Player {
     average: number;
     yards_game: number;
     touchdowns: number;
-    longest: string | number;
+    longest: string;
     first: number;
     first_pct: number;
     twenty_plus: number;
