@@ -13,7 +13,14 @@ namespace NflRushingApi.Services
     public class PlayersService : IPlayersService
     {
         private readonly IConfiguration Configuration;
-        private readonly IEnumerable<Player> _playersList;
+        private readonly IList<Player> _playersList;
+
+        private readonly Dictionary<String, IComparer<Player>> _sortFunction = new Dictionary<string, IComparer<Player>>()
+        {
+            { "yards", new YardsComparer() },
+            { "longest", new LongestRushComparer() },
+            { "touchdowns", new TouchdownsComparer() }
+        };
 
         public PlayersService(IConfiguration configuration)
         {
@@ -21,7 +28,7 @@ namespace NflRushingApi.Services
             // Configuration["DataFile"]
             String jsonString = File.ReadAllText(Configuration["DataFile"]);
 
-            IEnumerable<RawJsonPlayer> rawJsonPlayer = JsonSerializer.Deserialize<IEnumerable<RawJsonPlayer>>(jsonString);
+            IList<RawJsonPlayer> rawJsonPlayer = JsonSerializer.Deserialize<IList<RawJsonPlayer>>(jsonString);
             List<Player> players = new List<Player>();
             foreach (var jsonPlayer in rawJsonPlayer)
             {
@@ -31,7 +38,7 @@ namespace NflRushingApi.Services
         }
 
         [EnableCors("_myAllowSpecificOrigins")]
-        public IEnumerable<Player> getPlayers(string filter, string sortField, string sortOrder, int pageNumber, int pageSize)
+        public IList<Player> getPlayers(string filter, string sortField, string sortOrder, int pageNumber, int pageSize)
         {
             Console.WriteLine(
                 $"Player count: {_playersList.Count()}," +
@@ -40,7 +47,32 @@ namespace NflRushingApi.Services
                 $" sortOrder: {sortOrder}," +
                 $" pageNumber: {pageNumber}," +
                 $" pageSize: {pageSize}");
-            var result = _playersList;
+
+            List<Player> result;
+            IComparer<Player> sortingFunction;
+
+            if (sortField == null || !_sortFunction.ContainsKey(sortField))
+            {
+                // Default to sorting by yards
+                Console.WriteLine($"Could not find sorting field '{sortField}' - defaulting to 'yards'");
+                sortField = "yards";
+            }
+
+            _sortFunction.TryGetValue(sortField, out sortingFunction);
+
+            result = _playersList.ToList();
+            result.Sort(sortingFunction);
+
+            if (sortOrder == null)
+            {
+                sortOrder = "desc";
+            }
+
+            if (sortOrder == "desc")
+            {
+                result.Reverse();
+            }
+
 
             return result;
         }

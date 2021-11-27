@@ -8,7 +8,7 @@ namespace NflRushingApi.Services
 {
     public interface IPlayersService
     {
-        public IEnumerable<Player> getPlayers(
+        public IList<Player> getPlayers(
             String filter,
             String sortField,
             String sortOrder,

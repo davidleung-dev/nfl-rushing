@@ -32,13 +32,8 @@ namespace NflRushingApi.Models
             Match lngMatch = Regex.Match(jsonLng, @"(\d+)(T)?");
             if (lngMatch.Success)
             {
-                Console.WriteLine("Match");
                 longYards = Int32.Parse(lngMatch.Groups[1].Value);
                 longTd = lngMatch.Groups[2].Value == "T";
-            }
-            else
-            {
-                Console.WriteLine("No match");
             }
 
             Longest = new LongestRush() { Yards = longYards, Touchdown = longTd };
