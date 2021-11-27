@@ -49,6 +49,16 @@ namespace NflRushingApi.Services
                 $" pageSize: {pageSize}");
 
             List<Player> result;
+
+            // Filter fields by player name
+            if (filter == null)
+            {
+                filter = "";
+            }
+            //result = _playersList.Where(x => x.Name.Contains(filter)).ToList();
+            result = _playersList.Where(x => x.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+            // Sort fields
             IComparer<Player> sortingFunction;
 
             if (sortField == null || !_sortFunction.ContainsKey(sortField))
@@ -57,22 +67,15 @@ namespace NflRushingApi.Services
                 Console.WriteLine($"Could not find sorting field '{sortField}' - defaulting to 'yards'");
                 sortField = "yards";
             }
-
             _sortFunction.TryGetValue(sortField, out sortingFunction);
-
-            result = _playersList.ToList();
             result.Sort(sortingFunction);
 
-            if (sortOrder == null)
-            {
-                sortOrder = "desc";
-            }
-
-            if (sortOrder == "desc")
+            if (sortOrder == null || sortOrder == "desc")
             {
                 result.Reverse();
             }
 
+            // Apply pagination
 
             return result;
         }
