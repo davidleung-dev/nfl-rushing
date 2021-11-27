@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from  '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { LongestRush, Player } from '../models/player';
 
@@ -22,7 +22,16 @@ export class PlayerService {
     "yards", "touchdown"
   ];
 
+  private countSubject = new BehaviorSubject<number>(0);
+
+  public count$ = this.countSubject.asObservable();
+
   constructor(private http: HttpClient) { }
+
+  ngOnDestroy() {
+    console.log("Destroying service");
+    this.countSubject.complete();
+  }
 
   getPlayers(filter: string, sortField: string , sortOrder: string, pageNumber: number, pageSize:number): Observable<Player[]>
   {
@@ -34,6 +43,8 @@ export class PlayerService {
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString())
     }).pipe(
+      tap((res: any) => this.countSubject.next(res["totalPlayerCount"])),
+      map((res: any) => res["players"]),
       map((res: Object[]) => {
         let players: Player[] = [];
 

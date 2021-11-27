@@ -10,10 +10,9 @@ export class PlayersDataSource implements DataSource<Player> {
 
     private playersSubject = new BehaviorSubject<Player[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
-    private countSubject = new BehaviorSubject<number>(0);
 
     public loading$ = this.loadingSubject.asObservable();
-    public count$ = this.countSubject.asObservable();
+    public count$ = this.playerService.count$;
 
     constructor(private playerService: PlayerService) {}
 
@@ -24,7 +23,6 @@ export class PlayersDataSource implements DataSource<Player> {
     disconnect() {
         this.playersSubject.complete();
         this.loadingSubject.complete();
-        this.countSubject.complete();
     }
 
     loadPlayers(filter = '', sortField = 'yards', sortDirection = 'desc', pageIndex = 0, pageSize = 10) {
@@ -33,7 +31,6 @@ export class PlayersDataSource implements DataSource<Player> {
             this.playerService.getPlayers(filter, sortField, sortDirection, pageIndex, pageSize)
             .pipe(
                 catchError(() => of([])),
-                tap( (players: Player[]) => this.countSubject.next(players.length)),
                 finalize(() => this.loadingSubject.next(false))
             )
             .subscribe((players: any) => this.playersSubject.next(players));

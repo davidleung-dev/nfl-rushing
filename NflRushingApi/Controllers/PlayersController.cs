@@ -25,7 +25,7 @@ namespace NflRushingApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Player> Get(
+        public GetPlayersResponse Get(
             [FromQuery(Name = "filter")] String filter,
             [FromQuery(Name = "sortField")] String sortField,
             [FromQuery(Name = "sortOrder")] String sortOrder,

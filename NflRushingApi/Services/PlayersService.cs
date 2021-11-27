@@ -38,7 +38,7 @@ namespace NflRushingApi.Services
         }
 
         [EnableCors("_myAllowSpecificOrigins")]
-        public IList<Player> getPlayers(string filter, string sortField, string sortOrder, int pageNumber, int pageSize)
+        public GetPlayersResponse getPlayers(string filter, string sortField, string sortOrder, int pageNumber, int pageSize)
         {
             Console.WriteLine(
                 $"Player count: {_playersList.Count()}," +
@@ -55,8 +55,8 @@ namespace NflRushingApi.Services
             {
                 filter = "";
             }
-            //result = _playersList.Where(x => x.Name.Contains(filter)).ToList();
             result = _playersList.Where(x => x.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            int totalCount = result.Count();
 
             // Sort fields
             IComparer<Player> sortingFunction;
@@ -76,8 +76,22 @@ namespace NflRushingApi.Services
             }
 
             // Apply pagination
+            if (pageSize == 0)
+            {
+                pageSize = 10;
+            }
 
-            return result;
+            int startIdx = pageNumber * pageSize;                           // Calculate the starting index
+            int pageCount = Math.Min(pageSize, result.Count - startIdx);    // Calculate the number of items to take: minimum
+                                                                            //  of the page size and the number of items remaining from the start index
+
+            result = result.GetRange(startIdx, pageCount);                  // Get the subset
+
+            return new GetPlayersResponse()
+            {
+                Players = result,
+                TotalPlayerCount = totalCount
+            };
         }
     }
 }
