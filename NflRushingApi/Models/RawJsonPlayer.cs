@@ -1,9 +1,12 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
-namespace NflRushingApi
+namespace NflRushingApi.Models
 {
-    public class Player
+    public class RawJsonPlayer
     {
         [JsonPropertyName("Player")]
         public String Name { get; set; }
@@ -19,6 +22,7 @@ namespace NflRushingApi
         [JsonPropertyName("Att/G")]
         public float Attempts_Game { get; set; }
 
+        // Sorting Field
         [JsonPropertyName("Yds")]
         public dynamic Yards { get; set; }
 
@@ -28,9 +32,11 @@ namespace NflRushingApi
         [JsonPropertyName("Yds/G")]
         public float Yards_Game { get; set; }
 
+        // Sorting Field
         [JsonPropertyName("TD")]
         public int Touchdowns { get; set; }
 
+        // Sorting Field
         [JsonPropertyName("Lng")]
         public dynamic Longest { get; set; }
 
@@ -48,6 +54,5 @@ namespace NflRushingApi
 
         [JsonPropertyName("FUM")]
         public int Fumbles { get; set; }
-
     }
 }

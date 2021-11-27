@@ -55,7 +55,7 @@
 
     <ng-container matColumnDef="longest">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Longest Rush</mat-header-cell>
-        <mat-cell *matCellDef="let player">{{ player.longest }}</mat-cell>
+        <mat-cell *matCellDef="let player">{{ player.longest.yards }}{{ player.longest.touchdown ? 'T' : '' }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="first">

@@ -27,10 +27,10 @@ export class PlayersDataSource implements DataSource<Player> {
         this.countSubject.complete();
     }
 
-    loadPlayers(filter = '', sortDirection = 'desc', pageIndex = 0, pageSize = 10) {
+    loadPlayers(filter = '', sortField = 'yards', sortDirection = 'desc', pageIndex = 0, pageSize = 10) {
             this.loadingSubject.next(true);
 
-            this.playerService.getPlayers(filter, sortDirection, pageIndex, pageSize)
+            this.playerService.getPlayers(filter, sortField, sortDirection, pageIndex, pageSize)
             .pipe(
                 catchError(() => of([])),
                 tap( (players: Player[]) => this.countSubject.next(players.length)),

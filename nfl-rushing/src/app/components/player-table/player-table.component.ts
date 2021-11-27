@@ -70,7 +70,7 @@ export class PlayerTableComponent implements AfterViewInit, OnInit {
   }
 
   loadPlayersPage() {
-    this.dataSource.loadPlayers( '', this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
+    this.dataSource.loadPlayers(this.input.nativeElement.value, this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
   }
 
 }

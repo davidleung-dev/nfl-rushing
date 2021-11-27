@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NflRushingApi.Services;
+using NflRushingApi.Models;
 
 namespace NflRushingApi.Controllers
 {
@@ -26,11 +27,12 @@ namespace NflRushingApi.Controllers
         [HttpGet]
         public IEnumerable<Player> Get(
             [FromQuery(Name = "filter")] String filter,
+            [FromQuery(Name = "sortField")] String sortField,
             [FromQuery(Name = "sortOrder")] String sortOrder,
-            [FromQuery(Name = "pageNumber")] int pageNumer,
+            [FromQuery(Name = "pageNumber")] int pageNumber,
             [FromQuery(Name = "pageSize")] int pageSize)
         {
-            return _playersService.getPlayers();
+            return _playersService.getPlayers(filter, sortField, sortOrder, pageNumber, pageSize);
         }
     }
 }

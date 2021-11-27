@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from  '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Player } from '../models/player';
+import { LongestRush, Player } from '../models/player';
 
 
 @Injectable({
@@ -13,18 +13,23 @@ export class PlayerService {
 
   private playersApi: string = 'https://localhost:5001';
 
-  private requiredFields = [
+  private playerRequiredFields = [
       "Player", "team", "Pos", "Att", "Att/G", "Yds", "Avg", "Yds/G",
       "TD", "Lng", "1st", "1st%", "20+", "40+", "FUM"
   ];
 
+  private longestRushRequiredFields = [
+    "yards", "touchdown"
+  ];
+
   constructor(private http: HttpClient) { }
 
-  getPlayers(filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 10): Observable<Player[]>
+  getPlayers(filter: string, sortField: string , sortOrder: string, pageNumber: number, pageSize:number): Observable<Player[]>
   {
     return this.http.get<Object[]>(`${this.playersApi}/players`, {
       params: new HttpParams()
       .set('filter', filter)
+      .set('sortField', sortField)
       .set('sortOrder', sortOrder)
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString())
@@ -51,8 +56,18 @@ export class PlayerService {
   private validateHttpPlayer(httpPlayer: any): boolean {
     let result = true;
 
-    this.requiredFields.forEach(field => {
+    this.playerRequiredFields.forEach(field => {
       if (!(field in httpPlayer))
+      {
+        result = false;
+        return;
+      }
+    })
+
+    let lngRshObj = httpPlayer["Lng"];
+
+    this.longestRushRequiredFields.forEach(field => {
+      if (!(field in lngRshObj))
       {
         result = false;
         return;
@@ -63,6 +78,11 @@ export class PlayerService {
   }
 
   private parseHttpPlayer(httpPlayer: any): Player {
+    let longestRush: LongestRush = {
+      yards: httpPlayer["Lng"]["yards"],
+      touchdown: httpPlayer["Lng"]["touchdown"]
+    };
+
     let player: Player = {
       name: httpPlayer["Player"],
       team: httpPlayer["team"],
@@ -73,7 +93,7 @@ export class PlayerService {
       average: httpPlayer["Avg"],
       yards_game: httpPlayer["Yds/G"],
       touchdowns: httpPlayer["TD"],
-      longest: httpPlayer["Lng"],
+      longest: longestRush,
       first: httpPlayer["1st"],
       first_pct: httpPlayer["1st%"],
       twenty_plus: httpPlayer["20+"],
