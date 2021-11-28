@@ -64,6 +64,11 @@ export class PlayerService {
     );
   };
 
+  downloadCsv(): Observable<Blob>
+  {
+    return this.http.get("", { responseType: 'blob' });
+  }
+
   private validateHttpPlayer(httpPlayer: any): boolean {
     let result = true;
 

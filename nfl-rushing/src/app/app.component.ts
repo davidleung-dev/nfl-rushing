@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { PlayerTableComponent } from './components/player-table/player-table.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'nfl-rushing';
+
+  @ViewChild(PlayerTableComponent) playerComp: PlayerTableComponent;
+
 }

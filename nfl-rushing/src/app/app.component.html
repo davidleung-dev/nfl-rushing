@@ -1,1 +1,19 @@
-<app-player-table></app-player-table>
+<div class="app">
+
+    <mat-toolbar color="primary" class="header">
+        <div>NFL Rushing</div>
+    </mat-toolbar>
+
+    <div class="content my-custom-theme" color="primary">
+
+        <div class="table-section">
+            <app-player-table></app-player-table>
+        </div>
+
+        <div class="download-section">
+            <button mat-raised-button color="accent" (click)="playerComp.downloadCsv()">Download CSV</button>
+        </div>
+
+    </div>
+
+</div>

@@ -73,4 +73,8 @@ export class PlayerTableComponent implements AfterViewInit, OnInit {
     this.dataSource.loadPlayers(this.input.nativeElement.value, this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
   }
 
+  downloadCsv() {
+    console.log("Downloading CSV!");
+  }
+
 }

@@ -1,0 +1,26 @@
+.outer {
+    //width: 1000px;
+    //max-width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+ }
+
+.table {
+    width: 100%;
+}
+
+.mat-header-cell, .mat-cell {
+    min-width: 75px;
+}
+
+ .mat-column-name {
+     font-weight: bold;
+     width: 250px;
+     min-width: 150px;
+ }
+
+ .mat-column-team, .mat-column-position {
+     font-style: italic;
+ }
