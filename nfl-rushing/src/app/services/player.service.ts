@@ -11,7 +11,7 @@ import { LongestRush, Player } from '../models/player';
 })
 export class PlayerService {
 
-  private playersApi: string = 'https://localhost:5001';
+  private playersApi: string = 'http://localhost:5001';
 
   private playerRequiredFields = [
       "Player", "team", "Pos", "Att", "Att/G", "Yds", "Avg", "Yds/G",
