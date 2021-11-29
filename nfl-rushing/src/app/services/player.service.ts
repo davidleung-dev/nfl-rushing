@@ -66,7 +66,7 @@ export class PlayerService {
 
   downloadCsv(): Observable<Blob>
   {
-    return this.http.get("", { responseType: 'blob' });
+    return this.http.get(`${this.playersApi}/players/download`, { responseType: 'blob' });
   }
 
   private validateHttpPlayer(httpPlayer: any): boolean {

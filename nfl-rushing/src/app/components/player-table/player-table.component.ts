@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { fromEvent, merge, Observable } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { PlayersDataSource } from 'src/app/datasources/players.datasource';
 import { PlayerService } from 'src/app/services/player.service';
@@ -74,7 +74,26 @@ export class PlayerTableComponent implements AfterViewInit, OnInit {
   }
 
   downloadCsv() {
-    console.log("Downloading CSV!");
+    this.playersService.downloadCsv()
+    .pipe(
+      tap((resp: any) => {
+        console.log(resp);
+      })
+    )
+    .subscribe((resp: any) => {
+      let blob = new Blob([resp], { type: 'text/csv' });
+      let downloadUrl = URL.createObjectURL(blob);
+
+      let a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = 'rushing.csv';
+
+      a.click();
+
+      setTimeout(() => {
+        URL.revokeObjectURL(downloadUrl);
+      }, 1000)
+    });
   }
 
 }
