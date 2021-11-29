@@ -64,9 +64,18 @@ export class PlayerService {
     );
   };
 
-  downloadCsv(): Observable<Blob>
+  downloadCsv(filter: string, sortField: string, sortOrder: string, pageIndex: number, pageSize: number): Observable<Blob>
   {
-    return this.http.get(`${this.playersApi}/players/download`, { responseType: 'blob' });
+    return this.http.get(`${this.playersApi}/players/download`,
+    {
+      responseType: 'blob',
+      params: new HttpParams()
+      .set('filter', filter)
+      .set('sortField', sortField)
+      .set('sortOrder', sortOrder)
+      .set('pageNumber', pageIndex.toString())
+      .set('pageSize', pageSize.toString())
+    });
   }
 
   private validateHttpPlayer(httpPlayer: any): boolean {

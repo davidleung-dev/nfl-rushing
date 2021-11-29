@@ -73,8 +73,13 @@ export class PlayerTableComponent implements AfterViewInit, OnInit {
     this.dataSource.loadPlayers(this.input.nativeElement.value, this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
   }
 
-  downloadCsv() {
-    this.playersService.downloadCsv()
+  /*
+      Default args (none specified) indicates return all data
+      Specifying filter indicates return all data that matches filter
+      Page index and page Size specified indicates return datat seen on current page (filter or no filter)
+  */
+  downloadCsv(filter = '', pageSize = 0) {
+    this.playersService.downloadCsv(filter, this.sort.active, this.sort.direction, this.paginator.pageIndex, pageSize)
     .pipe(
       tap((resp: any) => {
         console.log(resp);

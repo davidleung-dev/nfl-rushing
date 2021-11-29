@@ -35,7 +35,22 @@ namespace NflRushingApi.Controllers
             [FromQuery(Name = "pageNumber")] int pageNumber,
             [FromQuery(Name = "pageSize")] int pageSize)
         {
-            return _playersService.getPlayers(filter, sortField, sortOrder, pageNumber, pageSize);
+            List<Player> players = _playersService.getPlayers(filter, sortField, sortOrder).ToList();
+            int totalCount = players.Count();
+
+            // Apply pagination
+            if (pageSize == 0)
+            {
+                pageSize = 10;
+            }
+
+            players = reducePlayersToPage(players, pageNumber, pageSize);
+
+            return new GetPlayersResponse()
+            {
+                Players = players,
+                TotalPlayerCount = totalCount
+            };
         }
 
         [HttpGet("download")]
@@ -46,7 +61,24 @@ namespace NflRushingApi.Controllers
             [FromQuery(Name = "pageNumber")] int pageNumber,
             [FromQuery(Name = "pageSize")] int pageSize)
         {
-            return new PlayerCsvResult(_playersService.getPlayers(filter, sortField, sortOrder, pageNumber, pageSize).Players, "rushing.csv");
+            List<Player> players = _playersService.getPlayers(filter, sortField, sortOrder).ToList();
+
+            // If page number and page size specified, reduce list
+            if (pageSize > 0)
+            {
+                players = reducePlayersToPage(players, pageNumber, pageSize);
+            }
+
+            return new PlayerCsvResult(players, "rushing.csv");
+        }
+
+        private List<Player> reducePlayersToPage(List<Player> players, int pageNumber, int pageSize)
+        {
+            int startIdx = pageNumber * pageSize;                           // Calculate the starting index
+            int pageCount = Math.Min(pageSize, players.Count - startIdx);   // Calculate the number of items to take: minimum
+                                                                            //  of the page size and the number of items remaining from the start index
+
+            return players.GetRange(startIdx, pageCount);                   // Get the subset
         }
     }
 }

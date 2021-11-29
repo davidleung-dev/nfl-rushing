@@ -11,7 +11,9 @@
         </div>
 
         <div class="download-section">
-            <button mat-raised-button color="accent" (click)="playerComp.downloadCsv()">Download CSV</button>
+            <button mat-raised-button color="accent" (click)="playerComp.downloadCsv()">Download CSV (All Data)</button>
+            <button mat-raised-button color="accent" (click)="playerComp.downloadCsv(playerComp.input.nativeElement.value)">Download CSV (Filtered Data)</button>
+            <button mat-raised-button color="accent" (click)="playerComp.downloadCsv(playerComp.input.nativeElement.value, playerComp.paginator.pageSize)">Download CSV (Single Page)</button>
         </div>
 
     </div>

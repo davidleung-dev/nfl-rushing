@@ -34,7 +34,7 @@ namespace NflRushingApi.Models
                 {
                     await streamWriter.WriteLineAsync(
                         $"{p.Name},{p.Team},{p.Position},{p.Attempts},{p.Attempts_Game}," +
-                        $"{p.Yards},{p.Average},{p.Yards_Game},{p.Touchdowns},{p.Longest}," +
+                        $"{p.Yards},{p.Average},{p.Yards_Game},{p.Touchdowns},{p.Longest.Yards}{(p.Longest.Touchdown ? "T" : "")}," +
                         $"{p.First},{p.First_Pct},{p.Twenty_Plus},{p.Forty_Plus},{p.Fumbles}"
                         );
                     await streamWriter.FlushAsync();
